@@ -1,0 +1,41 @@
+diff --git a/node_modules/webpack/lib/Compilation.js b/node_modules/webpack/lib/Compilation.js
+index a171a0d..b0957cd 100644
+--- a/node_modules/webpack/lib/Compilation.js
++++ b/node_modules/webpack/lib/Compilation.js
+@@ -1562,7 +1562,12 @@ class Compilation extends Tapable {
+ 		if (typeof dependency.getReference !== "function") return null;
+ 		const ref = dependency.getReference();
+ 		if (!ref) return null;
++		/* Webpack original *//*
+ 		return this.hooks.dependencyReference.call(ref, dependency, module);
++		*//* Webpack original */
++		// /* Patch *//*
++		return ref;
++		// *//* Patch */
+ 	}
+ 
+ 	/**
+diff --git a/node_modules/webpack/lib/dependencies/HarmonyImportSideEffectDependency.js b/node_modules/webpack/lib/dependencies/HarmonyImportSideEffectDependency.js
+index a41c1b9..70cee2d 100644
+--- a/node_modules/webpack/lib/dependencies/HarmonyImportSideEffectDependency.js
++++ b/node_modules/webpack/lib/dependencies/HarmonyImportSideEffectDependency.js
+@@ -11,7 +11,9 @@ class HarmonyImportSideEffectDependency extends HarmonyImportDependency {
+ 	}
+ 
+ 	getReference() {
++		/* Webpack original *//*
+ 		if (this._module && this._module.factoryMeta.sideEffectFree) return null;
++		*//* Webpack original */
+ 
+ 		return super.getReference();
+ 	}
+@@ -23,7 +25,9 @@ class HarmonyImportSideEffectDependency extends HarmonyImportDependency {
+ 
+ HarmonyImportSideEffectDependency.Template = class HarmonyImportSideEffectDependencyTemplate extends HarmonyImportDependency.Template {
+ 	getHarmonyInitOrder(dep) {
++		/* Webpack original *//*
+ 		if (dep._module && dep._module.factoryMeta.sideEffectFree) return NaN;
++		*//* Webpack original */
+ 		return super.getHarmonyInitOrder(dep);
+ 	}
+ };
